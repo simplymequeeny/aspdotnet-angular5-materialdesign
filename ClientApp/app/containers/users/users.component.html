@@ -1,0 +1,45 @@
+﻿<h1>dotnet + angular + material design web app</h1>
+
+<form>
+  <mat-form-field>
+    <input matInput placeholder="User name" #userName>
+  </mat-form-field>
+  <button mat-raised-button color="primary" 
+      (click)="addUser(userName.value); userName.value=''">
+    Add
+  </button> 
+</form>
+
+<p *ngIf="!users"><em>Loading...</em></p>
+<h2>Users</h2>
+<div>
+  <mat-table #table [dataSource]="dataSource">
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> User name </mat-header-cell>
+      <mat-cell *matCellDef="let user"> {{user.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+      <mat-cell *matCellDef="let user"> 
+        <button mat-icon-button color="accent" (click)="deleteUser(user)">
+          <mat-icon>delete</mat-icon>
+        </button>             
+      </mat-cell>
+    </ng-container>  
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+        [ngClass]="{'highlight': selectedRowId == row.id}"
+        (dblclick)="highlight(row)">
+    </mat-row>
+  </mat-table>
+
+  <app-user-detail [user]="selectedUser"></app-user-detail>
+</div>
